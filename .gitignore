@@ -36,6 +36,9 @@ local-output/
 private-output/
 deep-research-report.md
 
+# Local dashboard screenshots
+/assets/*.png
+
 # Local agent, planning, test, and release material
 /AGENTS.md
 /CHANGELOG.md
