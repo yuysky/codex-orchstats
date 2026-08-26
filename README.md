@@ -2,6 +2,32 @@
 
 A local HTML dashboard for viewing Codex orchestration usage, quota changes, and API-equivalent cost estimates.
 
+## Preview
+
+Price and quota changes:
+
+![Price and quota changes](assets/dashboard-cost-quota-trend.png)
+
+Token and model composition:
+
+![Token and model composition](assets/dashboard-composition.png)
+
+Project allocation:
+
+![Project allocation](assets/dashboard-allocation.png)
+
+Agent statistics:
+
+![Agent statistics](assets/dashboard-agent-statistics.png)
+
+Run details:
+
+![Run details](assets/dashboard-runs.png)
+
+Full dashboard:
+
+![Full dashboard](assets/dashboard-preview.png)
+
 ## Install
 
 Requires Python 3.9+ on macOS or Linux.
