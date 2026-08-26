@@ -1,0 +1,259 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "codex-orchstats dashboard history",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "since",
+    "scan",
+    "summary",
+    "runs",
+    "limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": "dashboard-history-0.1"},
+    "generated_at": {"type": "string"},
+    "since": {"enum": ["24h", "7d", "30d", "all"]},
+    "scan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "files_seen",
+        "files_parsed",
+        "invalid_identity_count",
+        "duplicate_id_count",
+        "orphan_count",
+        "cycle_count",
+        "unreadable_count",
+        "unknown_time_count"
+      ],
+      "properties": {
+        "files_seen": {"type": "integer", "minimum": 0},
+        "files_parsed": {"type": "integer", "minimum": 0},
+        "invalid_identity_count": {"type": "integer", "minimum": 0},
+        "duplicate_id_count": {"type": "integer", "minimum": 0},
+        "orphan_count": {"type": "integer", "minimum": 0},
+        "cycle_count": {"type": "integer", "minimum": 0},
+        "unreadable_count": {"type": "integer", "minimum": 0},
+        "unknown_time_count": {"type": "integer", "minimum": 0}
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_count",
+        "agent_count",
+        "tool_count",
+        "total_token_usage",
+        "high_diagnostic_count",
+        "latest_quota"
+      ],
+      "properties": {
+        "run_count": {"type": "integer", "minimum": 0},
+        "agent_count": {"type": "integer", "minimum": 0},
+        "tool_count": {"type": "integer", "minimum": 0},
+        "total_token_usage": {"$ref": "#/$defs/token"},
+        "high_diagnostic_count": {"type": "integer", "minimum": 0},
+        "latest_quota": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "plan_type",
+            "current_used_percent",
+            "observed_delta_percent",
+            "window_minutes",
+            "resets_at",
+            "has_credits",
+            "observed_at",
+            "evidence_level"
+          ],
+          "properties": {
+            "plan_type": {"type": ["string", "null"]},
+            "current_used_percent": {"type": ["number", "null"]},
+            "observed_delta_percent": {"type": ["number", "null"]},
+            "window_minutes": {"type": ["integer", "null"], "minimum": 0},
+            "resets_at": {"type": ["string", "number", "null"]},
+            "has_credits": {"type": ["boolean", "null"]},
+            "observed_at": {"type": ["string", "number", "null"]},
+            "evidence_level": {"type": ["string", "null"]}
+          }
+        }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "project",
+          "status",
+          "quality_flags",
+          "start_at",
+          "end_at",
+          "time_evidence",
+          "agent_tree",
+          "analysis"
+        ],
+        "properties": {
+          "label": {"type": "string"},
+          "project": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "evidence_level"],
+            "properties": {
+              "label": {"type": "string"},
+              "evidence_level": {"enum": ["derived", "unavailable"]}
+            }
+          },
+          "status": {"enum": ["observed", "in_progress", "partial"]},
+          "quality_flags": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "start_at": {"type": ["string", "number", "null"]},
+          "end_at": {"type": ["string", "number", "null"]},
+          "time_evidence": {"enum": ["derived", "unavailable"]},
+          "agent_tree": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["label", "parent_label", "depth"],
+              "properties": {
+                "label": {"type": "string"},
+                "parent_label": {"type": ["string", "null"]},
+                "depth": {"type": "integer", "minimum": 0}
+              }
+            }
+          },
+          "analysis": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "schema_version",
+              "agents",
+              "total_token_usage",
+              "quota",
+              "diagnostics",
+              "limitations"
+            ],
+            "properties": {
+              "schema_version": {"type": "string"},
+              "agents": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "label",
+                    "role",
+                    "model",
+                    "effort",
+                    "fork_mode",
+                    "token_usage",
+                    "tool_count"
+                  ],
+                  "properties": {
+                    "label": {"type": "string"},
+                    "role": {"type": ["string", "null"]},
+                    "model": {"type": ["string", "null"]},
+                    "effort": {"type": ["string", "null"]},
+                    "fork_mode": {"type": ["string", "null"]},
+                    "token_usage": {"$ref": "#/$defs/token"},
+                    "tool_count": {"type": "integer", "minimum": 0}
+                  }
+                }
+              },
+              "total_token_usage": {"$ref": "#/$defs/token"},
+              "quota": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "plan_type",
+                  "current_used_percent",
+                  "observed_delta_percent",
+                  "window_minutes",
+                  "resets_at",
+                  "has_credits",
+                  "observed_at",
+                  "evidence_level"
+                ],
+                "properties": {
+                  "plan_type": {"type": ["string", "null"]},
+                  "current_used_percent": {"type": ["number", "null"]},
+                  "observed_delta_percent": {"type": ["number", "null"]},
+                  "window_minutes": {"type": ["integer", "null"], "minimum": 0},
+                  "resets_at": {"type": ["string", "number", "null"]},
+                  "has_credits": {"type": ["boolean", "null"]},
+                  "observed_at": {"type": ["string", "number", "null"]},
+                  "evidence_level": {"type": ["string", "null"]}
+                }
+              },
+              "diagnostics": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "code",
+                    "severity",
+                    "evidence_level",
+                    "message",
+                    "agent_labels",
+                    "count"
+                  ],
+                  "properties": {
+                    "code": {"type": "string"},
+                    "severity": {"type": "string"},
+                    "evidence_level": {"type": "string"},
+                    "message": {"type": "string"},
+                    "agent_labels": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    },
+                    "count": {"type": "integer", "minimum": 0}
+                  }
+                }
+              },
+              "limitations": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "token": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_tokens",
+        "cached_input_tokens",
+        "cache_write_input_tokens",
+        "output_tokens",
+        "reasoning_output_tokens",
+        "total_tokens"
+      ],
+      "properties": {
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "cached_input_tokens": {"type": "integer", "minimum": 0},
+        "cache_write_input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "reasoning_output_tokens": {"type": "integer", "minimum": 0},
+        "total_tokens": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

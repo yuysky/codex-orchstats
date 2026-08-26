@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "codex-orchstats public summary",
+  "type": "object",
+  "required": [
+    "privacy_profile",
+    "schema_version",
+    "agents",
+    "diagnostics",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "privacy_profile": {
+      "const": "public-summary-v1"
+    },
+    "schema_version": {
+      "const": "0.1"
+    },
+    "agents": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "object",
+        "required": [
+          "role",
+          "model",
+          "effort",
+          "fork",
+          "token",
+          "tool_count"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "type": ["string", "null"],
+            "maxLength": 16,
+            "enum": [null, "root", "worker", "reviewer", "explorer", "fixer", "sites_deployer", "default", "unassigned", "custom"]
+          },
+          "model": {
+            "type": ["string", "null"],
+            "maxLength": 64,
+            "enum": [null, "gpt-5.6-sol", "gpt-5.6-terra", "gpt-5.6-luna", "unknown-model"]
+          },
+          "effort": {
+            "type": ["string", "null"],
+            "maxLength": 8,
+            "enum": [null, "none", "minimal", "low", "medium", "high", "max", "xhigh", "ultra", "unknown"]
+          },
+          "fork": {
+            "type": ["string", "null"],
+            "maxLength": 16,
+            "anyOf": [
+              {"type": "null"},
+              {"enum": ["none", "all", "unknown"]},
+              {"type": "string", "pattern": "^recent_[0-9]{1,6}$"}
+            ]
+          },
+          "token": {"$ref": "#/$defs/token"},
+          "tool_count": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "severity",
+          "evidence_level",
+          "message",
+          "agent_labels",
+          "count"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 24,
+            "enum": [
+              "CTX_FULL_FORK",
+              "CTX_FORK_UNKNOWN",
+              "HIGH_TIER_WORKER",
+              "REPEATED_TOOL_CALL",
+              "REPEATED_VALIDATION",
+              "PARENT_CHILD_OVERLAP",
+              "REVIEW_CHAIN"
+            ]
+          },
+          "severity": {"type": "string", "maxLength": 6, "enum": ["INFO", "MEDIUM", "HIGH"]},
+          "evidence_level": {
+            "type": "string",
+            "maxLength": 12,
+            "enum": ["observed", "derived", "heuristic", "unavailable"]
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 96,
+            "enum": [
+              "child agent uses full context fork",
+              "child fork mode is unknown",
+              "worker or fixer uses a high-tier model",
+              "same non-validation tool command observed across agents",
+              "same successful validation repeated without an intervening write",
+              "parent and child tool spans overlap on a shared resource or command",
+              "reviewer to worker/fixer to reviewer validation chain observed"
+            ]
+          },
+          "agent_labels": {
+            "type": "array",
+            "maxItems": 256,
+            "items": {"type": "string", "maxLength": 9, "pattern": "^agent-[0-9]{3}$"}
+          },
+          "count": {"type": "integer", "minimum": 0, "maximum": 9007199254740991}
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "maxLength": 96,
+        "enum": [
+          "semantic duplicate work unavailable",
+          "precise fixed context tax unavailable",
+          "delta account-level/shared and not per-agent billing",
+          "observations unavailable",
+          "snapshot timestamps unavailable; endpoint order is a stable fallback",
+          "observed delta unavailable without comparable timestamps"
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "token": {
+      "type": "object",
+      "maxProperties": 6,
+      "required": [
+        "input_tokens",
+        "cached_input_tokens",
+        "cache_write_input_tokens",
+        "output_tokens",
+        "reasoning_output_tokens",
+        "total_tokens"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "cached_input_tokens": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "cache_write_input_tokens": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "output_tokens": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "reasoning_output_tokens": {"type": "integer", "minimum": 0, "maximum": 9007199254740991},
+        "total_tokens": {"type": "integer", "minimum": 0, "maximum": 9007199254740991}
+      }
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "codex-orchstats normalized analysis",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "agents",
+    "total_token_usage",
+    "quota",
+    "diagnostics",
+    "limitations"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "label",
+          "role",
+          "model",
+          "effort",
+          "fork_mode",
+          "token_usage",
+          "tool_count"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "label": {"type": ["string", "null"]},
+          "role": {"type": ["string", "null"]},
+          "model": {"type": ["string", "null"]},
+          "effort": {"type": ["string", "null"]},
+          "fork_mode": {"type": ["string", "null"]},
+          "token_usage": {"$ref": "#/$defs/token_usage"},
+          "tool_count": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "total_token_usage": {
+      "$ref": "#/$defs/token_usage"
+    },
+    "quota": {
+      "type": "object",
+      "required": [
+        "plan_type",
+        "current_used_percent",
+        "observed_delta_percent",
+        "window_minutes",
+        "resets_at",
+        "has_credits",
+        "observed_at",
+        "evidence_level"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "plan_type": {"type": ["string", "null"]},
+        "current_used_percent": {"type": ["number", "null"]},
+        "observed_delta_percent": {"type": ["number", "null"]},
+        "window_minutes": {"type": ["integer", "null"], "minimum": 0},
+        "resets_at": {"type": ["string", "number", "null"]},
+        "has_credits": {"type": ["boolean", "null"]},
+        "observed_at": {"type": ["string", "number", "null"]},
+        "evidence_level": {"type": ["string", "null"]}
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "severity",
+          "evidence_level",
+          "message",
+          "agent_labels",
+          "count"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "code": {"type": "string"},
+          "severity": {"type": "string"},
+          "evidence_level": {"type": "string"},
+          "message": {"type": "string"},
+          "agent_labels": {"type": "array", "items": {"type": "string"}},
+          "count": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "$defs": {
+    "token_usage": {
+      "type": "object",
+      "required": [
+        "input_tokens",
+        "cached_input_tokens",
+        "cache_write_input_tokens",
+        "output_tokens",
+        "reasoning_output_tokens",
+        "total_tokens"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "cached_input_tokens": {"type": "integer", "minimum": 0},
+        "cache_write_input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "reasoning_output_tokens": {"type": "integer", "minimum": 0},
+        "total_tokens": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}
