@@ -46,10 +46,19 @@ Try the built-in demo:
 orchstats dashboard --demo
 ```
 
-Generate a dashboard from your local Codex history:
+Generate a dashboard from all local Codex history (the default):
 
 ```sh
 orchstats dashboard
+```
+
+Choose a time window explicitly when needed:
+
+```sh
+orchstats dashboard --since 24h
+orchstats dashboard --since 7d
+orchstats dashboard --since 30d
+orchstats dashboard --since all
 ```
 
 If your Codex sessions are stored somewhere else, pass their directory explicitly:

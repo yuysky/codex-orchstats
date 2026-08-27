@@ -73,7 +73,7 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="use the packaged fully synthetic sessions and include full history",
     )
-    dashboard.add_argument("--since", choices=DASHBOARD_WINDOWS, default="7d")
+    dashboard.add_argument("--since", choices=DASHBOARD_WINDOWS, default="all")
     dashboard.add_argument("--output", type=Path, default=None)
     dashboard.add_argument("--no-open", action="store_true")
 
