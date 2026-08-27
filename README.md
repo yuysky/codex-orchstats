@@ -1,6 +1,6 @@
 # codex-orchstats
 
-A local HTML dashboard for viewing Codex orchestration usage, quota changes, and API-equivalent cost estimates.
+A local HTML dashboard for viewing Codex orchestration usage, quota changes, and API-equivalent cost estimates. Developed with Codex.
 
 ## Preview
 
