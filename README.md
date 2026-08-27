@@ -4,6 +4,10 @@ A local HTML dashboard for viewing Codex orchestration usage, quota changes, and
 
 ## Preview
 
+Dashboard overview:
+
+![Dashboard overview](assets/dashboard-preview.png)
+
 Price and quota changes:
 
 ![Price and quota changes](assets/dashboard-cost-quota-trend.png)
@@ -23,10 +27,6 @@ Agent statistics:
 Run details:
 
 ![Run details](assets/dashboard-runs.png)
-
-Full dashboard:
-
-![Full dashboard](assets/dashboard-preview.png)
 
 ## Install
 
@@ -50,6 +50,12 @@ Generate a dashboard from your local Codex history:
 
 ```sh
 orchstats dashboard
+```
+
+If your Codex sessions are stored somewhere else, pass their directory explicitly:
+
+```sh
+orchstats dashboard --sessions-root /path/to/codex/sessions
 ```
 
 ## Find the HTML
